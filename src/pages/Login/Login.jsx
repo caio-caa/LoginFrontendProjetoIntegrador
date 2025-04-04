@@ -25,26 +25,24 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log('Email:', email, 'Senha:', senha);
-
+  
     try {
       const response = await fetch('http://127.0.0.1:3333/login', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' }
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password: senha }), // ✅ Enviando JSON correto
       });
-
+  
       const data = await response.json();
-
+  
       if (response.ok) {
-        // ✅ Salva token e ID do usuário no localStorage
         localStorage.setItem('token', data.token);
         localStorage.setItem('usuario_id', data.userId);
-
         setMessage('Login bem-sucedido!');
         console.log('Token recebido:', data.token);
         console.log('Usuário ID:', data.userId);
-
-        // ✅ Redireciona após salvar os dados
-        navigate('/Step1');
+  
+        window.location.href = 'http://127.0.0.1:5500/MENU/index.html';
       } else {
         setMessage(data.error || 'Erro ao fazer login');
         console.error('Erro na resposta do servidor:', data);
